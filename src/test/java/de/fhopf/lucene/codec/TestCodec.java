@@ -45,12 +45,17 @@ public class TestCodec {
     
     @Test
     public void indexPlaintextDocuments() throws IOException {
-        StandardAnalyzer analyzer = new StandardAnalyzer(Version.LUCENE_40);
-        IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_40, analyzer);
+        // StandardAnalyzer analyzer = new StandardAnalyzer(Version.LUCENE_40);
+        // IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_40, analyzer);
+        StandardAnalyzer analyzer = new StandardAnalyzer();
+        IndexWriterConfig config = new IndexWriterConfig(analyzer);
+
         // recreate the index on each execution
         config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
         config.setCodec(new SimpleTextCodec());
-        Directory luceneDir = FSDirectory.open(plaintextDir);
+        // Directory luceneDir = FSDirectory.open(plaintextDir);
+        Directory luceneDir = FSDirectory.open(plaintextDir.toPath());
+
         try (IndexWriter writer = new IndexWriter(luceneDir, config)) {
             writer.addDocument(Arrays.asList(
                     new TextField("title", "The title of my first document", Store.YES),
@@ -65,12 +70,17 @@ public class TestCodec {
     
     @Test
     public void indexMixedDocuments() throws IOException {
-        StandardAnalyzer analyzer = new StandardAnalyzer(Version.LUCENE_40);
-        IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_40, analyzer);
+        // StandardAnalyzer analyzer = new StandardAnalyzer(Version.LUCENE_40);
+        // IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_40, analyzer);
+        StandardAnalyzer analyzer = new StandardAnalyzer();
+        IndexWriterConfig config = new IndexWriterConfig(analyzer);
+
         // recreate the index on each execution
         config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
         config.setCodec(new SimpleTextCodec());
-        Directory luceneDir = FSDirectory.open(mixedDir);
+        // Directory luceneDir = FSDirectory.open(mixedDir);
+        Directory luceneDir = FSDirectory.open(mixedDir.toPath());
+
         try (IndexWriter writer = new IndexWriter(luceneDir, config)) {
             writer.addDocument(Arrays.asList(
                     new TextField("title", "The title of my first document", Store.YES),
@@ -81,7 +91,9 @@ public class TestCodec {
                     new TextField("content", "And this is the content", Store.NO)));
         }
 
-        config = new IndexWriterConfig(Version.LUCENE_40, analyzer);
+        // config = new IndexWriterConfig(Version.LUCENE_40, analyzer);
+        config = new IndexWriterConfig(analyzer);
+
         try (IndexWriter writer = new IndexWriter(luceneDir, config)) {
             writer.addDocument(Arrays.asList(
                     new TextField("title", "The title of my first document", Store.YES),

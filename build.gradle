@@ -1,4 +1,26 @@
-apply plugin: 'java'
+allprojects {
+    apply plugin: 'eclipse'
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: "maven"
+	[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+	eclipse {
+		classpath {
+			defaultOutputDir = file('bin')
+
+			file {
+				whenMerged { classpath ->
+					classpath.entries.findAll { entry ->
+						( entry.path == 'src/main/java' ||
+						entry.path == 'src/main/resources' ||
+						entry.path == 'src/test/java' ||
+						entry.path == 'src/test/resources' ) }*.output = ''
+				}
+			}
+		}
+	}
+}
 
 repositories {
     mavenCentral()
@@ -6,9 +28,13 @@ repositories {
 
 
 dependencies {
-    compile group: 'org.apache.lucene', name: 'lucene-core', version: '4.0.0'
-    compile group: 'org.apache.lucene', name: 'lucene-analyzers-common', version: '4.0.0'
-    compile group: 'org.apache.lucene', name: 'lucene-codecs', version: '4.0.0'
+    compile group: 'org.apache.lucene', name: 'lucene-core', version: '7.6.0'
+    compile group: 'org.apache.lucene', name: 'lucene-analyzers-common', version: '7.6.0'
+    compile group: 'org.apache.lucene', name: 'lucene-codecs', version: '7.6.0'
+    compile group: 'org.apache.lucene', name: 'lucene-queries', version: '7.6.0'
+    compile group: 'org.apache.lucene', name: 'lucene-queryparser', version: '7.6.0'
+    compile group: 'org.apache.lucene', name: 'lucene-highlighter', version: '7.6.0'
+
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.6.4'
     runtime group: 'org.slf4j', name: 'slf4j-simple', version: '1.6.4'
     testCompile group: 'junit', name: 'junit', version: '4.10'
